@@ -92,4 +92,91 @@ public class ControladorLibros {
             return libros;
         }
     }
+
+    public static int buscarPorCodigo(String codigo, ArrayList<Libro> libros){
+        for(int x = 0; x < libros.size();x++){
+            Libro libroActual = libros.get(x);
+            if(libroActual.getCodigo().equals(codigo)){
+                return x;
+            }
+        }
+        return -1;
+    }
+
+    public static void marcarComoPrestado(String codigoLibro){
+        ArrayList<Libro> libros = ControladorLibros.obtener();
+        int indice = ControladorLibros.buscarPorCodigo(codigoLibro,libros);
+        if (indice == -1){
+            return;
+        }
+        libros.get(indice).setDisponible(false);
+        ControladorLibros.guardarLibros(libros);
+    }
+
+    public static void cambiarSignatura(String codigoLibro,String nuevaSignatura,String nuevaLocalizacion){
+        ArrayList<Libro> libros = ControladorLibros.obtener();
+        int indice = ControladorLibros.buscarPorCodigo(codigoLibro,libros);
+        if (indice == -1){
+            return;
+        }
+        libros.get(indice).setSignatura(nuevaSignatura);
+        libros.get(indice).setLocalizacion(nuevaLocalizacion);
+        ControladorLibros.guardarLibros(libros);
+    }
+
+    public static void solicitarDatosParaCambiarSignatura(){
+        Scanner sc = new Scanner(System.in);
+        Libro libro = ControladorLibros.imprimirLibrosYPedirSeleccion();
+        if(libro.isDisponible()){
+            System.out.println("No puede cambiar un libro que no esta disponible");
+            return;
+        }
+        System.out.println("Ingrese nueva localizacion: ");
+        String nuevaLocalizacion = sc.nextLine();
+        System.out.println("Ingrese nueva signatura: ");
+        String nuevaSignatura = sc.nextLine();
+        ControladorLibros.cambiarSignatura(libro.getCodigo(), nuevaSignatura,nuevaLocalizacion);
+        System.out.println("Localizacion cambiada correctamente");
+    }
+
+    public static void imprimirLibros(ArrayList<Libro> libros){
+        System.out.println(
+                "+-----+----------+----------------------------------------+--------------------+----------+------------------------------+------------------------------+");
+        System.out.printf("|%-5s|%-10s|%-40s|%-20s|%-10s|%-30s|%-30s|\n", "No", "Codigo", "Titulo", "Autor",
+                "Disponible",
+                "Localizacion", "Signatura");
+        System.out.println(
+                "+-----+----------+----------------------------------------+--------------------+----------+------------------------------+------------------------------+");
+
+        for (int x = 0; x < libros.size(); x++) {
+            Libro libro = libros.get(x);
+            System.out.printf("|%-5d|%-10s|%-40s|%-20s|%-10s|%-30s|%-30s|\n", x + 1, libro.getCodigo(),
+                    libro.getTitulo(),
+                    libro.getAutor(), libro.isDisponible() ? "Si" : "No", libro.getLocalizacion(),
+                    libro.getSignatura());
+            System.out.println(
+                    "+-----+----------+----------------------------------------+--------------------+----------+------------------------------+------------------------------+");
+        }
+    }
+
+    public static Libro imprimirLibrosYPedirSeleccion(){
+        ArrayList<Libro> libros = ControladorLibros.obtener();
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            ControladorLibros.imprimirLibros(libros);
+            System.out.println("Ingrese el codigo del libro: ");
+            String codigo = sc.nextLine();
+            int indice = ControladorLibros.buscarPorCodigo(codigo,libros);
+            if (indice == -1) {
+                System.out.println("No existe libro con ese codigo");
+            }else{
+                Libro libro = libros.get(indice);
+                if (libro.isDisponible()){
+                    return libro;
+                }else{
+                    System.out.println("El libro esta ocupado");
+                }
+            }
+        }
+    }
 }

@@ -64,15 +64,35 @@ public class ControladorSocios {
         return socios;
     }
 
-    public static void imprimirSocios(ArrayList<Socio> socios){
+    public static void imprimirSocios(ArrayList<Socio> socios) {
         ArrayList<Prestamo> prestamos = ControladorPrestamos.obtener();
+        System.out.println(
+                "+-----+----------+----------------------------------------+----------------------------------------+--------------------+");
         System.out.printf("|%-5s|%-10s|%-40s|%-40s|%-20s|\n", "#", "No. socio", "Nombre", "Direccion",
                 "Libros prestados");
-        System.out.println("+-----+----------+----------------------------------------+----------------------------------------+--------------------+");
-        for(int x = 0; x < socios.size(); x++){
+        System.out.println(
+                "+-----+----------+----------------------------------------+----------------------------------------+--------------------+");
+        for (int x = 0; x < socios.size(); x++) {
             Socio socio = socios.get(x);
-            int librosPrestados = ControlarPrestamos.cantidadLibrosPrestados(socio.getNumeroDeSocio(),prestamos);
-            if ((librosPrestados < 10)) {
+            System.out.printf("|%-5s|%-10s|%-40s|%-40s|%-20s|\n", x + 1, socio.getNumeroDeSocio(), socio.getNombre(),
+                    socio.getDireccion(), ControladorPrestamos.cantidadLibrosPrestados(socio.getNumeroDeSocio(), prestamos));
+            System.out.println(
+                    "+-----+----------+----------------------------------------+----------------------------------------+--------------------+");
+        }
+    }
+
+    public static void imprimirSociosNoFiables(ArrayList<Socio> socios) {
+        ArrayList<Prestamo> prestamos = ControladorPrestamos.obtener();
+        System.out.println(
+                "+-----+----------+----------------------------------------+----------------------------------------+--------------------+");
+        System.out.printf("|%-5s|%-10s|%-40s|%-40s|%-20s|\n", "#", "No. socio", "Nombre", "Direccion",
+                "Libros prestados");
+        System.out.println(
+                "+-----+----------+----------------------------------------+----------------------------------------+--------------------+");
+        for (int x = 0; x < socios.size(); x++) {
+            Socio socio = socios.get(x);
+            int librosPrestados = ControladorPrestamos.cantidadLibrosPrestados(socio.getNumeroDeSocio(), prestamos);
+            if (librosPrestados < 10) {
                 continue;
             }
             System.out.printf("|%-5s|%-10s|%-40s|%-40s|%-20s|\n", x + 1, socio.getNumeroDeSocio(), socio.getNombre(),

@@ -5,10 +5,10 @@ import java.time.format.DateTimeFormatter;
 
 public class Prestamo {
     private String codLibro;
-    private int numSocio;
+    private String numSocio;
     private LocalDateTime fecha;
 
-    public Prestamo(String codLibro, int numSocio, LocalDateTime fecha) {
+    public Prestamo(String codLibro, String numSocio, LocalDateTime fecha) {
         this.codLibro = codLibro;
         this.numSocio = numSocio;
         this.fecha = fecha;
@@ -22,11 +22,11 @@ public class Prestamo {
         this.codLibro = codLibro;
     }
 
-    public int getNumSocio() {
+    public String getNumSocio() {
         return numSocio;
     }
 
-    public void setNumSocio(int numSocio) {
+    public void setNumSocio(String numSocio) {
         this.numSocio = numSocio;
     }
 
